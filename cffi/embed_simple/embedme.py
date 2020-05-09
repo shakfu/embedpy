@@ -16,5 +16,4 @@ ffibuilder.embedding_init_code("""
         return x + y
 """)
 
-#ffibuilder.compile(target="plugin-1.5.*", verbose=True)
 ffibuilder.emit_c_code("my_plugin.c")
