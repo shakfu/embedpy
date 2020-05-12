@@ -25,7 +25,7 @@ cdef extern from "Python.h":
     const char* PyUnicode_AS_DATA(object o)
     const char* PyUnicode_AsUTF8(object unicode)
     const char* PyUnicode_AsUTF8AndSize(object unicode, Py_ssize_t *size)
-
+    const PyUnicode_AsUTF8String(object unicode)
 
     ## long: https://docs.python.org/3/c-api/long.html
     long PyLong_AsLong(object obj)
