@@ -1,0 +1,8 @@
+see: https://docs.python.org/3/extending/embedding.html
+
+
+# check out
+
+
+- unbuffer.c in expect as a pseudo-terminal emulation
+
