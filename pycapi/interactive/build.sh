@@ -1,7 +1,7 @@
 
 echo "compiling..."
 
-for fname in py_string py_file py_module py_eval
+for fname in py_shell
 do
     echo "compiling $fname"
     gcc `python3.7-config --cflags --ldflags` $fname.c -o $fname

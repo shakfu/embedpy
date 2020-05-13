@@ -30,6 +30,13 @@ main(int argc, char *argv[])
     PyList_Append(list, s2);
     PyList_Append(list, s3);
 
+    if (PySequence_Check(s1)) {
+        Py_ssize_t length = PySequence_Length(s1);
+        printf("unicode object is a sequence with a length of %ld\n", length);
+    } else {
+        printf("unicode object is not a sequence");
+    }    
+
     if (PySequence_Check(list)) {
         Py_ssize_t length = PySequence_Length(list);
         printf("object is a sequence with a length of %ld\n", length);

@@ -9,17 +9,21 @@ main(int argc, char *argv[])
         fprintf(stderr, "Fatal error: cannot decode argv[0]\n");
         exit(1);
     }
-    Py_SetProgramName(program);  /* optional but recommended */
+    Py_SetProgramName(program);
     Py_Initialize();
+
+    /* ------------------------------------------------ */
+
+    PyRun_InteractiveLoop(stdin, "<stdin>");
+
+    /* ------------------------------------------------ */
     
-    PyObject *obj = Py_BuildValue("s", "hello.py");
-    FILE *file = _Py_fopen_obj(obj, "r+");
-    if(file != NULL) {
-        PyRun_SimpleFile(file, "hello.py");
-    }
     if (Py_FinalizeEx() < 0) {
         exit(120);
     }
+    PyMem_RawFree(program);
     return 0;
 }
+
+
 
