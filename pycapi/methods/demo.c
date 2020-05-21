@@ -1,17 +1,7 @@
-#include <stdio.h>  
-#include <unistd.h>
-#include <string.h>
 
 /* python */
 #define PY_SSIZE_T_CLEAN
 #include <Python.h>
-
-/* --------------------------------------- */
-// constants
-
-#define N_CMDS 5
-#define N_CHARS 5
-
 
 /* --------------------------------------- */
 // types
@@ -20,14 +10,10 @@ typedef struct _py {
     PyObject *p_globals;
 } t_py;
 
-typedef void (*t_func)(t_py *, char *);
-
 
 /* --------------------------------------- */
 // forward func declarations
 
-int py_check(char *cmd);
-void py_free(t_py *x);
 void py_import(t_py *x, char *args);
 void py_eval(t_py *x, char *args);
 void py_exec(t_py *x, char *args);
@@ -39,25 +25,7 @@ int main(int argc, char *argv[])
 {
     t_py obj = {.p_globals = NULL};
     t_py *x  = &obj;
-    char line[50];
-    char *index = NULL;
-    char *cmd = NULL;
     
-    const char *keyword[N_CMDS] = {
-        "import",
-        "eval",
-        "exec",
-        "execfile",
-        "run"
-    };
-
-    t_func method[N_CMDS] = {
-        py_import,
-        py_eval,
-        py_exec,
-        py_execfile,
-        py_run
-    };
 
     Py_Initialize();
 
@@ -65,30 +33,15 @@ int main(int argc, char *argv[])
     PyObject *main_module = PyImport_AddModule("__main__"); // borrowed reference
     x->p_globals = PyModule_GetDict(main_module);           // borrowed reference
 
-    // prepopulate globals dict
-    int err = PyDict_SetItemString(x->p_globals, "testing", PyLong_FromLong(20));
-    if (err != 0) {
-        printf("PyDict_SetItemString with key 'testing', failed\n");
+
+    if (argc > 2) {
+        if (strcmp(argv[1], "import") == 0)   py_import(x, argv[2]);
+        if (strcmp(argv[1], "eval") == 0)     py_eval(x, argv[2]);
+        if (strcmp(argv[1], "exec") == 0)     py_exec(x, argv[2]);
+        if (strcmp(argv[1], "execfile") == 0) py_execfile(x, argv[2]);
+        if (strcmp(argv[1], "run") == 0)      py_run(x, argv[2]);
     }
 
-    printf("usage: [import, eval, exec, execfile, run] [args] \n");
-    while (fgets(line, sizeof line, stdin)) {
-        cmd = strtok(line, " ");
-        for (int i=0; i <= N_CMDS; i++) {
-            if ((strncmp(cmd, keyword[i], N_CHARS)) == 0) { //match      
-                // printf("cmd: %s\n", cmd);
-                index = strstr(line, cmd);
-                if (index) {
-                    char *args = index + strlen(cmd)+1;
-                    args = strtok(args,"\n");
-                    printf("size of args: %ld\n", strlen(args));
-                    // printf("found -> keyword:%s args:%s\n", cmd, args);
-                    method[i](x, args);
-                }
-            }
-        }
-    }
-    printf("\ndone!");
 
     Py_FinalizeEx();
     return 0;
@@ -124,7 +77,6 @@ void py_import(t_py *x, char *args)
             // Py_XDECREF(x_module);
         }
 }
-
 
 void py_run(t_py *x, char *args)
 {
@@ -172,7 +124,6 @@ void py_run(t_py *x, char *args)
         }
 }
 
-
 void py_execfile(t_py *x, char *args)
 {
     PyObject *pval = NULL;
@@ -212,7 +163,6 @@ void py_execfile(t_py *x, char *args)
             Py_XDECREF(ptraceback);
         }
 }
-
 
 void py_exec(t_py *x, char *args)
 {
@@ -331,6 +281,7 @@ void py_eval(t_py *x, char *args)
 
     // success cleanup
     Py_XDECREF(pval);
+    // Py_XDECREF(locals);
     printf("END eval: %s\n", args);
 
     error:
@@ -346,7 +297,7 @@ void py_eval(t_py *x, char *args)
             Py_DECREF(ptraceback);
         }
         // cleanup
-        Py_XDECREF(pval);    
+        Py_XDECREF(pval);
+        // Py_XDECREF(locals);
+    
 }
-
-
