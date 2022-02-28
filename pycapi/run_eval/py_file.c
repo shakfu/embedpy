@@ -34,7 +34,7 @@ main(int argc, char *argv[])
             /* convert to C ----------------------------------------------------*/
 
             // string/unicode
-            if PyUnicode_Check(pval) {
+            if (PyUnicode_Check(pval)) {
                 char *cstr;
                 PyArg_Parse(pval, "s", &cstr);
                 // cstr = PyUnicode_AsUTF8(pval1);
@@ -42,14 +42,14 @@ main(int argc, char *argv[])
             }
 
             // int/long
-            if PyLong_Check(pval) {
+            if (PyLong_Check(pval)) {
                 int cint;
                 cint = (int) PyLong_AsLong(pval);
                 printf("c-int: %d\n", cint);
             }
             
             // float
-            if PyFloat_Check(pval) {
+            if (PyFloat_Check(pval)) {
                 float cfloat;
                 cfloat = (float) PyFloat_AsDouble(pval);
                 printf("c-float: %f\n", cfloat);

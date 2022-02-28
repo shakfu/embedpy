@@ -54,31 +54,34 @@ int main(int argc, char *argv[])
     /* convert to C ----------------------------------------------------*/
     
     // string/unicode
-    if PyUnicode_Check(pval1) {
+    if (PyUnicode_Check(pval1)) {
         PyArg_Parse(pval1, "s", &cstr);
         // cstr = PyUnicode_AsUTF8(pval1);
         printf("c-string: %s\n", cstr);
         Py_DECREF(pval1);
+    } else {
+        Py_DECREF(pval1);
     }
 
     // int/long
-    if PyLong_Check(pval2) {
+    if (PyLong_Check(pval2)) {
         cint = (int) PyLong_AsLong(pval2);
         printf("c-int: %d\n", cint);
+        Py_DECREF(pval2);
+    } else {
         Py_DECREF(pval2);
     }
     
 
     // float
-    if PyFloat_Check(pval3) {
+    if (PyFloat_Check(pval3)) {
          cfloat = (float) PyFloat_AsDouble(pval3);
          printf("c-float: %f\n", cfloat);
          Py_DECREF(pval3);
+    } else {
+        Py_DECREF(pval3);
     }
 
-    Py_DECREF(pval1);
-    Py_DECREF(pval2);
-    Py_DECREF(pval3);
     Py_FinalizeEx();
 
     return 0;

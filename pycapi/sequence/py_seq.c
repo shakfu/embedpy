@@ -59,13 +59,13 @@ main(int argc, char *argv[])
             printf("%d long: %ld\n", i, long_item);
         }
         
-        if PyFloat_Check(item) {
+        if (PyFloat_Check(item)) {
             i++;
             float float_item = PyFloat_AsDouble(item);
             printf("%d float: %f\n", i, float_item);
         }
 
-        if PyUnicode_Check(item) {
+        if (PyUnicode_Check(item)) {
             i++;
             const char *unicode_item = PyUnicode_AsUTF8(item);
             printf("%d unicode: %s\n", i, unicode_item);

@@ -262,13 +262,13 @@ void py_eval(t_py *x, char *args)
                 i++;
             }
             
-            if PyFloat_Check(item) {
+            if (PyFloat_Check(item)) {
                 float float_item = PyFloat_AsDouble(item);
                 printf("%d float: %f\n", i, float_item);
                 i++;
             }
 
-            if PyUnicode_Check(item) {
+            if (PyUnicode_Check(item)) {
                 const char *unicode_item = PyUnicode_AsUTF8(item);
                 printf("%d unicode: %s\n", i, unicode_item);
                 i++;
