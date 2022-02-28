@@ -3,8 +3,7 @@
 
 #include <libgen.h>
 
-int
-main(int argc, char *argv[])
+int main(int argc, char *argv[])
 {
     // char path[150];
 
@@ -23,7 +22,7 @@ main(int argc, char *argv[])
     // sprintf(path, "%s/Resources", dirname(dirname(exec_path)));
     // wchar_t *python_home = Py_DecodeLocale(path, NULL);
 
-    wchar_t *python_home = Py_DecodeLocale("/Users/sa/Documents/shared/projects/embedpy/pycapi/set_pyhome/Resources", NULL);
+    wchar_t *python_home = Py_DecodeLocale("$HOME/Downloads/projects/embedpy/pycapi/set_pyhome/Resources", NULL);
     // wchar_t *python_home = Py_DecodeLocale("../Resources", NULL);
     if (python_home == NULL) {
         fprintf(stderr, "Fatal error: cannot set python_home\n");
